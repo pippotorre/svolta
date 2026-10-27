@@ -1,5 +1,5 @@
 /* Service worker di sVolta: notifiche push e funzionamento offline. */
-const VERSION = 'svolta-v3';
+const VERSION = 'svolta-v4';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/badge-96.png'];
 const STATIC_HOSTS = ['cdnjs.cloudflare.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 

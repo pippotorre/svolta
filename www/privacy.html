@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>sVolta · Privacy</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#13294b">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <style>
+    :root {
+      --paper: #eef2f6; --sheet: #ffffff; --ink: #13294b; --ink-soft: #4b5b74; --rule: #d6dee8;
+      --marker: #ffe45c; --marker-ink: #13294b; --link: #2457d6;
+      --font: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color-scheme: light dark;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --paper: #0d1726; --sheet: #15223a; --ink: #e7edf6; --ink-soft: #9fb0c8; --rule: #243651;
+        --marker: #e9cf3a; --marker-ink: #0d1726; --link: #8fb4ff;
+      }
+    }
+    :root[data-theme="dark"] {
+      --paper: #0d1726; --sheet: #15223a; --ink: #e7edf6; --ink-soft: #9fb0c8; --rule: #243651;
+      --marker: #e9cf3a; --marker-ink: #0d1726; --link: #8fb4ff;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 1rem/1.6 var(--font); -webkit-text-size-adjust: 100%; }
+    main { max-width: 680px; margin: 0 auto; padding: 16px 16px 40px; }
+    .back { display: inline-block; margin: 4px 0 12px; color: var(--link); text-decoration: none; font-weight: 700; }
+    h1 { font-size: 1.7rem; line-height: 1.2; margin: 0 0 4px; }
+    h1 mark { background: var(--marker); color: var(--marker-ink); padding: 0 4px; border-radius: 3px; }
+    .upd { color: var(--ink-soft); margin: 0 0 16px; font-size: .92rem; }
+    section { background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: 4px 16px 8px; margin: 0 0 12px; }
+    h2 { font-size: 1.08rem; margin: 14px 0 4px; }
+    p, ul { margin: 0 0 10px; }
+    ul { padding-left: 1.2em; }
+    li { margin: 0 0 4px; }
+    a { color: var(--link); overflow-wrap: anywhere; }
+    .short { background: var(--marker); color: var(--marker-ink); border: 0; }
+    .short ul { margin-top: 10px; }
+  </style>
+</head>
+<body>
+<main>
+  <a class="back" href="./">← sVolta</a>
+  <h1>Informativa sulla <mark>privacy</mark></h1>
+  <p class="upd">Aggiornata il 27 ottobre 2026</p>
+
+  <section class="short">
+    <ul>
+      <li>Non servono account: niente nome, numero di telefono o email.</li>
+      <li>Se attivi le notifiche, il sito conserva solo l'indirizzo tecnico anonimo che serve a mandarle al tuo telefono.</li>
+      <li>Le circolari lette sono ricordate solo sul tuo telefono.</li>
+      <li>Le visite sono contate con un servizio di statistica senza cookie.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Chi gestisce l'app</h2>
+    <p>sVolta è un'app non ufficiale, curata da un genitore e non collegata al Liceo Volta. È pubblicata sul sito
+      entratadisicurezza.com, che è anche il titolare dei pochi dati descritti qui. Per domande o richieste:
+      <a href="mailto:info@entratadisicurezza.com">info@entratadisicurezza.com</a>.</p>
+  </section>
+
+  <section>
+    <h2>Notifiche</h2>
+    <p>Le notifiche sono facoltative. Se le attivi, il browser del telefono crea un'iscrizione: un indirizzo
+      tecnico presso il servizio di notifiche del telefono (Google per Android, Apple per iPhone, Mozilla per
+      Firefox) e due chiavi per cifrare i messaggi. Non contiene il tuo nome né il numero di telefono.</p>
+    <p>Il sito conserva l'iscrizione insieme alla data di attivazione e a quella dell'ultimo invio riuscito,
+      solo per mandarti l'avviso quando esce una circolare. Il testo delle notifiche viaggia cifrato.</p>
+    <p>L'iscrizione viene cancellata quando disattivi le notifiche dall'app oppure, in automatico, dopo 20 invii
+      non riusciti (per esempio se disinstalli l'app). Puoi anche revocare il permesso dalle impostazioni del telefono.</p>
+  </section>
+
+  <section>
+    <h2>Dati sul tuo telefono</h2>
+    <p>Per funzionare l'app salva sul telefono: le circolari che hai già letto, l'ultima copia dell'elenco
+      (per vederlo anche senza rete), se hai attivato le notifiche o installato l'app, e gli ultimi PDF aperti.
+      Questi dati non vengono inviati a nessuno e si cancellano eliminando i dati del sito dal browser o
+      disinstallando l'app.</p>
+  </section>
+
+  <section>
+    <h2>Circolari e PDF</h2>
+    <p>Le circolari sono quelle pubblicate dal liceo nel suo elenco pubblico. I PDF vengono scaricati dal nostro
+      sito e poi mostrati nell'app: il tuo telefono non si collega direttamente all'archivio della scuola.</p>
+  </section>
+
+  <section>
+    <h2>Statistiche di visita</h2>
+    <p>Per sapere quante persone usano l'app contiamo le visite con GoatCounter, un servizio di statistica senza
+      cookie. Non salva nulla sul telefono e non conserva il tuo indirizzo IP, che usa solo per ricavare il paese.
+      Registra in forma aggregata la pagina visitata, il sito di provenienza, il tipo di browser e di sistema,
+      la lingua, la larghezza dello schermo e l'uso del pulsante «Installa l'app». I dati restano su server in
+      Germania e Finlandia e non servono per pubblicità o profilazione. Informativa del servizio:
+      <a href="https://www.goatcounter.com/privacy">goatcounter.com/privacy</a>.</p>
+  </section>
+
+  <section>
+    <h2>Altri servizi esterni</h2>
+    <p>Aprendo l'app il telefono scarica alcuni file da servizi esterni, che ricevono il tuo indirizzo IP come
+      avviene per ogni sito:</p>
+    <ul>
+      <li><strong>Google Fonts</strong> (fonts.googleapis.com, fonts.gstatic.com): i caratteri del testo.
+        <a href="https://policies.google.com/privacy">Informativa di Google</a>.</li>
+      <li><strong>cdnjs di Cloudflare</strong> (cdnjs.cloudflare.com): il lettore dei PDF.
+        <a href="https://www.cloudflare.com/privacypolicy/">Informativa di Cloudflare</a>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Il sito</h2>
+    <p>Il sito è ospitato da Tophost, che come ogni hosting può registrare nei log del server i dati tecnici delle
+      richieste (indirizzo IP, data e ora, pagina richiesta) per il funzionamento e la sicurezza del servizio.
+      sVolta non usa questi dati per riconoscere chi usa l'app.</p>
+  </section>
+
+  <section>
+    <h2>I tuoi diritti</h2>
+    <p>Puoi chiedere informazioni sui dati che ti riguardano, la loro correzione o cancellazione scrivendo a
+      <a href="mailto:info@entratadisicurezza.com">info@entratadisicurezza.com</a>. Per cancellare l'iscrizione
+      alle notifiche basta disattivarle dall'app. Puoi anche rivolgerti al Garante per la protezione dei dati
+      personali (<a href="https://www.garanteprivacy.it">garanteprivacy.it</a>).</p>
+    <p>Eventuali modifiche a questa informativa saranno pubblicate su questa pagina, con la data di aggiornamento.</p>
+  </section>
+</main>
+</body>
+</html>

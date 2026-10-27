@@ -448,6 +448,8 @@
 
   /* ---------------- installazione su Android ---------------- */
 
+  // Statistiche (GoatCounter): eventi anonimi sull'installazione. Se lo script non è caricato (offline, blocco pubblicità) non fa nulla.
+  const conta = (nome) => { try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: 'svolta-' + nome, title: 'svolta: ' + nome, event: true }); } catch (e) {} };
   let installEvent = null;
   const isAndroid = /Android/i.test(ua);
 
@@ -459,6 +461,7 @@
   window.addEventListener('appinstalled', () => {
     installEvent = null;
     store.set('installed', true);
+    conta('installata');
     drawNotify();
     panelFlash('App installata. La trovi tra le tue app con il nome sVolta.');
   });
@@ -478,8 +481,10 @@
     b.onclick = async () => {
       const ev = installEvent;
       if (!ev) return;
+      conta('installa-clic');
       ev.prompt();
       const choice = await ev.userChoice.catch(() => null);
+      if (choice && choice.outcome === 'dismissed') conta('installa-rifiutata');
       if (choice && choice.outcome === 'accepted') installEvent = null;
       drawNotify();
     };
