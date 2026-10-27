@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>sVolta – le circolari del Volta sul telefono</title>
+<style>
+  @page { size: 110mm 224mm; margin: 0; }
+  :root {
+    --paper: #eef2f6; --sheet: #ffffff; --ink: #13294b; --ink-soft: #4b5b74;
+    --rule: #d6dee8; --marker: #ffe45c;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    width: 110mm; height: 224mm; overflow: hidden;
+    background: var(--paper); color: var(--ink);
+    font-family: "Inter", sans-serif; font-size: 9.6pt; line-height: 1.4;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  a { color: inherit; }
+
+  .band { background: var(--ink); color: #fff; padding: 8mm 8mm 12mm; }
+  .app { font-family: "Inter Display", "Inter", sans-serif; font-weight: 600; font-size: 11pt; margin: 0 0 4mm; opacity: .85; display: flex; align-items: center; gap: 2.4mm; }
+  .app img { width: 7mm; height: 7mm; border-radius: 1.6mm; }
+  h1 { font-family: "Inter Display", "Inter", sans-serif; font-weight: 700; font-size: 23pt; line-height: 1.02; letter-spacing: -0.015em; margin: 0 0 3.5mm; }
+  .lead { margin: 0; font-size: 10.2pt; opacity: .92; max-width: 88mm; }
+
+  .wrap { padding: 0 8mm; }
+
+  /* anteprima della notifica */
+  .notif {
+    margin-top: -8mm;
+    background: var(--sheet); border-radius: 4mm;
+    padding: 3.2mm 3.6mm; display: grid; grid-template-columns: 9mm 1fr; gap: 3mm; align-items: start;
+    box-shadow: 0 1.5mm 5mm -2mm rgba(19,41,75,.35);
+  }
+  .notif img { width: 9mm; height: 9mm; border-radius: 2mm; }
+  .notif .who { display: flex; justify-content: space-between; color: var(--ink-soft); font-size: 7.6pt; margin-bottom: .6mm; }
+  .notif .t { font-weight: 700; font-size: 9.6pt; }
+  .notif .b { font-size: 9.2pt; }
+  .caption { font-size: 7.8pt; color: var(--ink-soft); margin: 1.6mm 0 0 1mm; }
+
+  /* pulsante-link */
+  .cta {
+    display: block; text-decoration: none; margin: 4.5mm 0 0;
+    background: var(--marker); color: var(--ink);
+    border-radius: 4mm; padding: 3.8mm 4mm 3.4mm; text-align: center;
+  }
+  .cta .go { display: block; font-family: "Inter Display", "Inter", sans-serif; font-weight: 700; font-size: 15pt; line-height: 1.1; }
+  .cta .url { display: block; font-size: 9pt; margin-top: 1mm; text-decoration: underline; text-underline-offset: .6mm; }
+  .free { text-align: center; font-size: 8.2pt; color: var(--ink-soft); margin: 1.8mm 0 0; }
+
+  /* istruzioni */
+  .how { margin-top: 4.5mm; display: grid; gap: 3mm; }
+  .os { background: var(--sheet); border-radius: 3.2mm; padding: 3.4mm 3.8mm 3mm; }
+  .os h2 { font-family: "Inter Display", "Inter", sans-serif; font-weight: 700; font-size: 11.5pt; margin: 0 0 1.6mm; }
+  .os h2 span { font-family: "Inter", sans-serif; font-weight: 400; font-size: 8pt; color: var(--ink-soft); margin-left: 1.5mm; }
+  ol { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+  li { counter-increment: s; display: grid; grid-template-columns: 5.2mm 1fr; gap: 2.2mm; margin: 0 0 1.4mm; font-size: 9pt; line-height: 1.32; }
+  li::before {
+    content: counter(s); width: 5.2mm; height: 5.2mm; border-radius: 50%;
+    background: var(--ink); color: #fff; font-weight: 700; font-size: 7.6pt;
+    display: grid; place-items: center; margin-top: -.2mm;
+  }
+  li:last-child { margin-bottom: 0; }
+  .share { width: 3.2mm; height: 3.2mm; vertical-align: -.5mm; }
+
+  .foot { margin: 3.5mm 0 0; font-size: 7.6pt; color: var(--ink-soft); line-height: 1.35; }
+</style>
+</head>
+<body>
+  <header class="band">
+    <p class="app"><img src="../www/icons/icon-192.png" alt="">sVolta</p>
+    <h1>Le circolari del Volta, appena pubblicate</h1>
+    <p class="lead">Un avviso sul telefono a ogni nuova circolare della scuola, e tutte le circolari da leggere in un posto solo.</p>
+  </header>
+
+  <div class="wrap">
+    <div class="notif" aria-label="Esempio di notifica">
+      <img src="../www/icons/icon-192.png" alt="">
+      <div>
+        <div class="who"><span>sVolta</span><span>ora</span></div>
+        <div class="t">CIRCOLARE 51</div>
+        <div class="b">Allievi con ridotta mobilità motoria</div>
+      </div>
+    </div>
+
+    <a class="cta" href="https://www.entratadisicurezza.com/svolta/">
+      <span class="go">Apri sVolta</span>
+      <span class="url">www.entratadisicurezza.com/svolta</span>
+    </a>
+    <p class="free">Gratuita. Non chiede nome, numero né email.</p>
+
+    <section class="how">
+      <div class="os">
+        <h2>iPhone <span>serve iOS 16.4 o successivo</span></h2>
+        <ol>
+          <li><span>Apri il link con <strong>Safari</strong>. Se si apre dentro WhatsApp, tocca l’icona della bussola o “Apri in Safari”.</span></li>
+          <li><span>Tocca Condividi <svg class="share" viewBox="0 0 24 24"><path d="M12 3v12M8 7l4-4 4 4M6 11H5v10h14V11h-1" fill="none" stroke="#13294b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> (con iOS 26: tocca ··· e poi Condividi), quindi <strong>Aggiungi alla schermata Home</strong> e <strong>Aggiungi</strong>.</span></li>
+          <li><span>Apri sVolta dall’icona sulla Home, tocca <strong>Attiva le notifiche</strong> e poi <strong>Consenti</strong>.</span></li>
+        </ol>
+      </div>
+      <div class="os">
+        <h2>Android</h2>
+        <ol>
+          <li><span>Apri il link con <strong>Chrome</strong>.</span></li>
+          <li><span>Tocca <strong>Installa l’app</strong> e conferma. Se il pulsante non c’è: menu <svg class="share" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.2" fill="#13294b"/><circle cx="12" cy="12" r="2.2" fill="#13294b"/><circle cx="12" cy="19" r="2.2" fill="#13294b"/></svg> e poi <strong>Installa app</strong>.</span></li>
+          <li><span>Apri sVolta dall’icona, tocca <strong>Attiva le notifiche</strong> e poi <strong>Consenti</strong>.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <p class="foot">Con il pulsante Prova, nell’app, controlli subito che l’avviso arrivi. App non ufficiale, curata da un genitore: le circolari sono quelle pubblicate sul sito del liceo.</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>sVolta · Circolari</title>
+  <meta name="description" content="Le circolari del Liceo Volta di Torino, con un avviso sul telefono quando ne esce una nuova.">
+  <meta name="theme-color" content="#13294b">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <!-- schermate di avvio per iPhone (generate da tools/splash.py) -->
+  <link rel="apple-touch-startup-image" href="icons/splash/splash-1320x2868.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/splash/splash-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/splash/splash-1284x2778.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/splash/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/splash/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/splash/splash-1206x2622.png" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/splash/splash-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/splash/splash-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/splash/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/splash/splash-1242x2208.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/splash/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="sVolta">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Barlow+Condensed:wght@600&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#lista">Vai all'elenco</a>
+
+  <header class="top">
+    <div class="top-row">
+      <div>
+        <h1>Circolari</h1>
+        <p class="school">Liceo Volta, Torino</p>
+      </div>
+      <button class="icon-btn" id="refresh" type="button" aria-label="Aggiorna l'elenco">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section id="notify" class="notify" aria-live="polite" hidden></section>
+
+    <div class="tools">
+      <label class="search">
+        <span class="visually-hidden">Cerca tra le circolari</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="q" type="search" placeholder="Cerca per numero o parola" autocomplete="off" enterkeyhint="search">
+      </label>
+      <button id="mark-all" class="text-btn" type="button" hidden>Segna tutte come lette</button>
+    </div>
+
+    <p id="status" class="status" role="status"></p>
+    <ol id="lista" class="list" aria-label="Circolari pubblicate"></ol>
+  </main>
+
+  <footer class="foot">
+    <p>Le circolari arrivano dal sito del liceo. App non ufficiale, curata da un genitore.</p>
+  </footer>
+
+  <div id="viewer" class="viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-title" hidden>
+    <div class="viewer-bar">
+      <button class="icon-btn" id="viewer-close" type="button" aria-label="Chiudi la circolare">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="viewer-head">
+        <p id="viewer-title" class="viewer-title"></p>
+        <p id="viewer-sub" class="viewer-sub"></p>
+      </div>
+      <div class="viewer-actions">
+        <button class="icon-btn" id="zoom-out" type="button" aria-label="Rimpicciolisci">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+        <button class="icon-btn" id="zoom-in" type="button" aria-label="Ingrandisci">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12M12 6v12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+        <a class="icon-btn" id="viewer-download" href="#" target="_blank" rel="noopener" aria-label="Apri il PDF originale">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+    <div id="pages" class="pages" tabindex="-1"></div>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

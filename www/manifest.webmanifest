@@ -1,0 +1,17 @@
+{
+  "name": "sVolta – Circolari Liceo Volta",
+  "short_name": "sVolta",
+  "description": "Le circolari del Liceo Volta di Torino, con un avviso quando ne esce una nuova.",
+  "lang": "it",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#13294b",
+  "theme_color": "#13294b",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

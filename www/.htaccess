@@ -1,0 +1,25 @@
+# sVolta – circolari
+DirectoryIndex index.html
+Options -Indexes
+
+<IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
+  AddType application/javascript .mjs
+</IfModule>
+
+# HTTPS obbligatorio (le notifiche push funzionano solo in HTTPS)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "^(sw\.js|index\.html|manifest\.webmanifest)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "\.(woff2|png|mjs)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+</IfModule>

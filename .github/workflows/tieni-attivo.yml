@@ -1,0 +1,26 @@
+name: Tieni attivo il controllo
+
+# Nei repository pubblici GitHub sospende le azioni pianificate dopo 60 giorni
+# senza attività. Una volta al mese questo job registra un piccolo aggiornamento
+# così il controllo delle circolari non si ferma.
+on:
+  schedule:
+    - cron: '17 6 1 * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  tieni-attivo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Aggiorna la data dell'ultimo controllo mensile
+        run: |
+          date -u +"%Y-%m-%d" > .github/ultimo-controllo.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/ultimo-controllo.txt
+          git commit -m "Controllo mensile: repository attivo" || echo "nessuna modifica"
+          git push

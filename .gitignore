@@ -1,0 +1,8 @@
+# Password e token: restano solo sul server
+www/api/inc/config.php
+
+# Cache generata dal server
+www/api/cache/*
+!www/api/cache/.htaccess
+
+.DS_Store
