@@ -45,7 +45,7 @@ Prima fase: genitori di una classe. In seguito, se possibile, estensione a tutta
 ## Architettura
 
 ```
-GitHub Actions (ogni 10 min) ──► api/check.php ──► feed RSS della scuola
+cron-job.org (ogni 10 min) ──► api/check.php?token=… ──► feed RSS della scuola
                                        ├─ nuova circolare ──► push a tutti i dispositivi
                                        └─ MySQL: svolta_circolari, svolta_subscriptions, svolta_settings
 
@@ -73,7 +73,8 @@ Protezione dai doppioni: ogni circolare viene "prenotata" con un UPDATE condizio
 - [ ] Prova di notifica reale su Android e su iPhone
 - [x] Volantino per i genitori (PDF con link cliccabile + testo per WhatsApp)
 - [ ] Eventuale filtro per anno di corso
-- [ ] Pagina di informativa privacy (oggi non c'è): citare iscrizione push anonima e statistiche GoatCounter
+- [x] Pagina di informativa privacy (`www/privacy.html`)
+- [ ] Valutare di ospitare i caratteri sul sito invece che da Google Fonts (meno servizi esterni da citare nell'informativa)
 - [ ] Dopo qualche giorno, controllare su GoatCounter che arrivino visite ed eventi
 - [ ] Eventuale coinvolgimento della scuola per l'estensione a tutto l'istituto
 
@@ -95,3 +96,4 @@ Protezione dai doppioni: ogni circolare viene "prenotata" con un UPDATE condizio
 - **27/10/2026** – La chiamata da GitHub Actions a `check.php` fallisce: Tophost rifiuta le richieste in arrivo da GitHub. Il controllo ogni 10 minuti passa a cron-job.org (chiamata GET a `check.php?token=…`, nessuna modifica al codice dell'app). Tolti dal repository i workflow `controllo.yml` e `tieni-attivo.yml`; GitHub resta solo come archivio del codice. README aggiornato con la configurazione di cron-job.org. Nota: la prima esecuzione da GitHub è stata quella successiva alla pubblicazione del codice (prima il repository era vuoto).
 - **27/10/2026** – cron-job.org configurato: job "sVolta – controllo circolari" ogni 10 minuti, test run con esito 200 OK. Il sistema è completo: app, notifiche, database e controllo automatico funzionanti.
 - **27/10/2026** – Statistiche di visita con GoatCounter: script in `index.html` (percorso inviato `/svolta/`, senza `index.html`) ed eventi sul pulsante "Installa l'app" (clic, finestra chiusa senza installare, app installata). Cache del service worker svolta-v4. Verificato in Chromium simulando Android con lo script vero di GoatCounter: visita ed eventi inviati, nessun errore JavaScript, notifiche e lettore non toccati.
+- **27/10/2026** – Corretto lo schema dell'architettura: il controllo ogni 10 minuti parte da cron-job.org, non da GitHub Actions. Creata l'informativa `www/privacy.html` (stessa grafica dell'app, tema chiaro e scuro): gestore e contatto info@entratadisicurezza.com, iscrizione alle notifiche (cosa si conserva, quando si cancella: disattivazione o 20 invii falliti), dati salvati sul telefono, PDF serviti dal sito, statistiche GoatCounter, servizi esterni (Google Fonts, cdnjs), log di Tophost, diritti. Link «Privacy» nel piè di pagina.
