@@ -43,6 +43,7 @@ try {
     foreach ($sql as $q) {
         db()->exec($q);
     }
+    ensure_log_table();
 } catch (Throwable $e) {
     json_out(['error' => 'Database: ' . $e->getMessage()], 500);
 }

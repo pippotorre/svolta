@@ -53,3 +53,24 @@ CREATE TABLE IF NOT EXISTS `svolta_circolari` (
   KEY `idx_pending` (`notified_at`, `created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   COMMENT='sVolta: circolari lette dal feed e stato delle notifiche';
+
+-- Registro degli invii (diagnostica: esito di ogni notifica e di ogni prova)
+-- Viene creata anche in automatico dall'app al primo invio.
+CREATE TABLE IF NOT EXISTS `svolta_invii` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `created_at` DATETIME NOT NULL,
+  `tipo` VARCHAR(16) NOT NULL,
+  `origine` VARCHAR(16) NOT NULL,
+  `guid` VARCHAR(64) NULL DEFAULT NULL,
+  `numero` INT NULL DEFAULT NULL,
+  `oggetto` TEXT NULL,
+  `iscritti` INT NOT NULL DEFAULT 0,
+  `consegnate` INT NOT NULL DEFAULT 0,
+  `fallite` INT NOT NULL DEFAULT 0,
+  `rimosse` INT NOT NULL DEFAULT 0,
+  `codici` VARCHAR(255) NULL DEFAULT NULL,
+  `errore` TEXT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  COMMENT='sVolta: registro degli invii delle notifiche';

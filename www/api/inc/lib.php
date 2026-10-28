@@ -204,6 +204,10 @@ function push_to_subscribers(string $payload, ?array $onlyIds = null): array
 
     $res = webpush_send_many($subs, $payload, vapid());
     $ok = $failed = $removed = 0;
+    $codes = [];
+    foreach ($res as $code) {
+        $codes[(string) $code] = ($codes[(string) $code] ?? 0) + 1;
+    }
     $del = db()->prepare('DELETE FROM ' . t('subscriptions') . ' WHERE id = ?');
     $good = db()->prepare('UPDATE ' . t('subscriptions') . ' SET last_ok_at = NOW(), fail_count = 0 WHERE id = ?');
     $bad = db()->prepare('UPDATE ' . t('subscriptions') . ' SET fail_count = fail_count + 1 WHERE id = ?');
@@ -222,14 +226,87 @@ function push_to_subscribers(string $payload, ?array $onlyIds = null): array
     }
     // dopo molti errori consecutivi l'iscrizione viene eliminata
     db()->exec('DELETE FROM ' . t('subscriptions') . ' WHERE fail_count >= 20');
-    return ['sent' => $ok, 'failed' => $failed, 'removed' => $removed];
+    ksort($codes);
+    return ['iscritti' => count($subs), 'sent' => $ok, 'failed' => $failed, 'removed' => $removed, 'codes' => $codes];
+}
+
+/** Spiegazione in italiano dei codici di risposta del servizio push. */
+function push_code_meaning(int $code): string
+{
+    if ($code >= 200 && $code < 300) return 'consegnata al servizio notifiche del telefono';
+    switch ($code) {
+        case -1: return 'iscrizione non valida: è stata rimossa, riattiva le notifiche';
+        case 0: return 'il servizio notifiche non ha risposto (rete o timeout)';
+        case 400: return 'richiesta rifiutata dal servizio notifiche';
+        case 401:
+        case 403: return 'le chiavi del server non corrispondono a quelle dell\'iscrizione: disattiva e riattiva le notifiche';
+        case 404:
+        case 410: return 'il telefono non è più iscritto (app disinstallata o notifiche revocate): l\'iscrizione è stata rimossa, riattiva le notifiche';
+        case 413: return 'messaggio troppo lungo';
+        case 429: return 'troppi invii ravvicinati, il servizio chiede di aspettare';
+        default: return $code >= 500 ? 'il servizio notifiche ha un problema temporaneo' : 'risposta inattesa (codice ' . $code . ')';
+    }
+}
+
+/* ---------------- Registro degli invii ---------------- */
+
+function ensure_log_table(): void
+{
+    static $done = false;
+    if ($done) {
+        return;
+    }
+    db()->exec('CREATE TABLE IF NOT EXISTS ' . t('invii') . ' (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        created_at DATETIME NOT NULL,
+        tipo VARCHAR(16) NOT NULL,
+        origine VARCHAR(16) NOT NULL,
+        guid VARCHAR(64) NULL,
+        numero INT NULL,
+        oggetto TEXT NULL,
+        iscritti INT NOT NULL DEFAULT 0,
+        consegnate INT NOT NULL DEFAULT 0,
+        fallite INT NOT NULL DEFAULT 0,
+        rimosse INT NOT NULL DEFAULT 0,
+        codici VARCHAR(255) NULL,
+        errore TEXT NULL,
+        KEY idx_created (created_at)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+    $done = true;
+}
+
+/**
+ * Salva l'esito di un invio. Non deve mai bloccare le notifiche:
+ * se il registro non è scrivibile, l'errore viene ignorato.
+ */
+function log_invio(string $tipo, string $origine, ?array $c, ?array $r, ?string $errore = null): void
+{
+    try {
+        ensure_log_table();
+        $st = db()->prepare('INSERT INTO ' . t('invii') . '
+            (created_at, tipo, origine, guid, numero, oggetto, iscritti, consegnate, fallite, rimosse, codici, errore)
+            VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $st->execute([
+            $tipo, $origine,
+            $c['guid'] ?? null, $c['numero'] ?? null, $c['oggetto'] ?? null,
+            (int) ($r['iscritti'] ?? 0), (int) ($r['sent'] ?? 0), (int) ($r['failed'] ?? 0), (int) ($r['removed'] ?? 0),
+            $r ? json_encode($r['codes'] ?? []) : null,
+            $errore,
+        ]);
+        // tengo gli ultimi 6 mesi
+        if (random_int(1, 50) === 1) {
+            db()->exec('DELETE FROM ' . t('invii') . ' WHERE created_at < NOW() - INTERVAL 6 MONTH');
+        }
+    } catch (Throwable $e) {
+        // il registro è solo diagnostica
+    }
 }
 
 /**
  * Confronta il feed con le circolari già viste e notifica quelle nuove.
  * Al primo avvio registra le circolari esistenti senza notificarle.
  */
-function process_new_circolari(array $items): array
+function process_new_circolari(array $items, string $origine = 'controllo'): array
 {
     $tbl = t('circolari');
     $isFirstRun = (int) db()->query("SELECT COUNT(*) FROM $tbl")->fetchColumn() === 0;
@@ -257,7 +334,15 @@ function process_new_circolari(array $items): array
             continue; // già presa da un altro processo
         }
         $c['numero'] = $c['numero'] === null ? null : (int) $c['numero'];
-        $r = push_to_subscribers(notification_payload($c));
+        try {
+            $r = push_to_subscribers(notification_payload($c));
+        } catch (Throwable $e) {
+            // invio non riuscito: la circolare torna "da notificare" e si riprova al giro successivo
+            db()->prepare("UPDATE $tbl SET notified_at = NULL WHERE guid = ?")->execute([$c['guid']]);
+            log_invio('circolare', $origine, $c, null, $e->getMessage());
+            throw $e;
+        }
+        log_invio('circolare', $origine, $c, $r);
         $report[] = ['guid' => $c['guid'], 'numero' => $c['numero'], 'oggetto' => $c['oggetto']] + $r;
     }
     return ['first_run' => $isFirstRun, 'new' => $report];

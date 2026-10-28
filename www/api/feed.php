@@ -8,7 +8,7 @@ $feed = load_feed(false);
 // così le notifiche partono anche se il controllo schedulato è in ritardo.
 if (!empty($feed['fetched']) && $feed['items']) {
     try {
-        process_new_circolari($feed['items']);
+        process_new_circolari($feed['items'], 'app');
     } catch (Throwable $e) {
         // l'elenco va mostrato comunque
     }

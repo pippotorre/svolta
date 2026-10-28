@@ -34,6 +34,7 @@ www/                      ← va caricato su Tophost nella cartella /svolta
     test.php              notifica di prova al solo telefono che la chiede
     pdf.php               ponte per i PDF della scuola
     vapid.php             chiave pubblica per le notifiche
+    status.php            pagina di stato per chi gestisce l'app (protetta da token)
     inc/config.sample.php modello di configurazione
     inc/lib.php           funzioni comuni
     inc/webpush.php       invio notifiche (senza librerie esterne)
@@ -101,7 +102,9 @@ Il codice è nel repository pubblico `pippotorre/svolta`. `www/api/inc/config.ph
 
 ## Manutenzione
 
-- Lo stato del servizio si vede nella cronologia del job su cron-job.org: ogni esecuzione riporta circolari lette, dispositivi iscritti e notifiche inviate.
+- **Pagina di stato**: `https://www.entratadisicurezza.com/svolta/api/status.php?token=IL_TUO_TOKEN`. Mostra l'ultimo controllo di cron-job.org, i telefoni iscritti (solo il tipo: Android o iPhone), l'esito di ogni invio (consegnate, fallite, rimosse, con il codice di risposta del servizio notifiche) e le ultime circolari con l'ora in cui sono state notificate. Non condividere l'indirizzo: contiene il token.
+- Il registro degli invii (tabella `svolta_invii`) si crea da solo al primo invio e conserva gli ultimi 6 mesi.
+- Anche la cronologia del job su cron-job.org riporta, per ogni esecuzione, circolari lette, dispositivi iscritti e notifiche inviate.
 - I telefoni che disinstallano l'app o bloccano le notifiche vengono tolti automaticamente.
 - Per forzare un controllo: *Test run* su cron-job.org, oppure apri nel browser l'indirizzo di `check.php` con il token.
 - Le chiavi delle notifiche si creano una volta sola in `install.php`. Non cancellare la tabella `svolta_settings`: tutti i telefoni dovrebbero riattivare le notifiche.

@@ -31,6 +31,14 @@ $payload = json_encode([
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
 $r = push_to_subscribers($payload, [(int) $id]);
+log_invio('prova', 'prova', null, $r);
 db()->prepare('DELETE FROM ' . t('settings') . ' WHERE k LIKE ? AND v < ?')
     ->execute(['test\\_%', (string) (time() - 3600)]);
-json_out(['ok' => $r['sent'] === 1] + $r);
+
+if ($r['sent'] === 1) {
+    json_out(['ok' => true] + $r);
+}
+// la notifica non è partita: spiego perché
+$code = (int) array_key_first($r['codes'] ?: ['0' => 1]);
+$why = push_code_meaning($code);
+json_out(['ok' => false, 'error' => 'La notifica di prova non è partita: ' . $why] + $r, 502);
